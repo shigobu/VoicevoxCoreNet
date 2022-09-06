@@ -15,7 +15,11 @@ namespace VoicevoxCoreNet
         /// <summary>
         /// ライブラリ名
         /// </summary>
-        const string dllName = "core.dll";
+        /// <remarks>
+        /// 拡張子を省く事によって、osごとのファイル名違いを吸収できる。
+        /// https://www.mono-project.com/docs/advanced/pinvoke/
+        /// </remarks>
+        const string dllName = "core";
 
         /// <summary>
         /// デフォルトの初期化オプションを生成する
