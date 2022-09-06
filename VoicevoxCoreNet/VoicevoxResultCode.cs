@@ -61,5 +61,5 @@
         /// 無効なAudioQuery
         /// </summary>
         VOICEVOX_RESULT_INVALID_AUDIO_QUERY_ERROR = 13,
-    };
+    }
 }

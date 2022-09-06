@@ -46,5 +46,5 @@ namespace VoicevoxCoreNet
                 open_jtalk_dict_dir = Encoding.UTF8.GetBytes(value + '\0');
             }
         }
-    };
+    }
 }

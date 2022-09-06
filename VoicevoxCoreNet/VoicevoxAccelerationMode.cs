@@ -17,5 +17,5 @@
         /// ハードウェアアクセラレーションモードを"GPU"に設定する
         /// </summary>
         VOICEVOX_ACCELERATION_MODE_GPU = 2,
-    };
+    }
 }
