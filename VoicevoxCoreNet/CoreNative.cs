@@ -193,6 +193,103 @@ namespace VoicevoxCoreNet
         [DllImport(dllName)]
         extern internal static VoicevoxAudioQueryOptions voicevox_make_default_audio_query_options();
 
+        /// <summary>
+        /// AudioQuery を実行する
+        /// </summary>
+        /// <param name="text">テキスト null終端UTF8</param>
+        /// <param name="speaker_id">話者ID</param>
+        /// <param name="options">AudioQueryのオプション</param>
+        /// <param name="output_audio_query_json">AudioQuery を json でフォーマットしたもの</param>
+        /// <returns>結果コード</returns>
+        /// <remarks>
+        /// # Safety
+        /// @param text null終端文字列であること
+        /// @param output_audio_query_json 自動でheapメモリが割り当てられるので ::voicevox_audio_query_json_free で解放する必要がある
+        /// </remarks>
+        [DllImport(dllName)]
+        extern internal static VoicevoxResultCode voicevox_audio_query(byte[] text,
+                                                                       uint speaker_id,
+                                                                       VoicevoxAudioQueryOptions options,
+                                                                       out IntPtr output_audio_query_json);
+
+        /// <summary>
+        /// AudioQuery から音声合成する
+        /// </summary>
+        /// <param name="audio_query_json">jsonフォーマットされた AudioQuery null終端UTF8</param>
+        /// <param name="speaker_id">話者ID</param>
+        /// <param name="options">AudioQueryから音声合成オプション</param>
+        /// <param name="output_wav_length">出力する wav データのサイズ</param>
+        /// <param name="output_wav">データの出力先</param>
+        /// <returns>結果コード</returns>
+        /// <remarks>
+        /// # Safety
+        /// @param output_wav_length 出力先の領域が確保された状態でpointerに渡されていること
+        /// @param output_wav 自動で output_wav_length 分のデータが割り当てられるので ::voicevox_wav_free で解放する必要がある
+        /// </remarks>
+        [DllImport(dllName)]
+        extern internal static VoicevoxResultCode voicevox_synthesis(byte[] audio_query_json,
+                                                                     uint speaker_id,
+                                                                     VoicevoxSynthesisOptions options,
+                                                                     out UIntPtr output_wav_length,
+                                                                     out IntPtr output_wav);
+
+        /// <summary>
+        /// デフォルトのテキスト音声合成オプションを生成する
+        /// </summary>
+        /// <returns>テキスト音声合成オプション</returns>
+        [DllImport(dllName)]
+        extern internal static VoicevoxTtsOptions voicevox_make_default_tts_options();
+
+        /// <summary>
+        /// テキスト音声合成を実行する
+        /// </summary>
+        /// <param name="text">テキスト null終端UTF8</param>
+        /// <param name="speaker_id">話者ID</param>
+        /// <param name="options">テキスト音声合成オプション</param>
+        /// <param name="output_wav_length">出力する wav データのサイズ</param>
+        /// <param name="output_wav">wav データの出力先</param>
+        /// <returns>結果コード</returns>
+        /// <remarks>
+        /// # Safety
+        /// @param output_wav_length 出力先の領域が確保された状態でpointerに渡されていること
+        /// @param output_wav は自動で output_wav_length 分のデータが割り当てられるので ::voicevox_wav_free で解放する必要がある
+        /// </remarks>
+        [DllImport(dllName)]
+        extern internal static VoicevoxResultCode voicevox_tts(byte[] text,
+                                                               uint speaker_id,
+                                                               VoicevoxTtsOptions options,
+                                                               out UIntPtr output_wav_length,
+                                                               out IntPtr output_wav);
+
+        /// <summary>
+        /// jsonフォーマットされた AudioQuery データのメモリを解放する
+        /// </summary>
+        /// <param name="audio_query_json">解放する json フォーマットされた AudioQuery データ</param>
+        /// <remarks>
+        /// # Safety
+        /// @param wav 確保したメモリ領域が破棄される
+        /// </remarks>
+        [DllImport(dllName)]
+        extern internal static void voicevox_audio_query_json_free(IntPtr audio_query_json);
+
+        /// <summary>
+        /// wav データのメモリを解放する
+        /// </summary>
+        /// <param name="wav">解放する wav データ</param>
+        /// <remarks>
+        /// # Safety
+        /// @param wav 確保したメモリ領域が破棄される
+        /// </remarks>
+        [DllImport(dllName)]
+        extern internal static void voicevox_wav_free(IntPtr wav);
+
+        /// <summary>
+        /// エラー結果をメッセージに変換する
+        /// </summary>
+        /// <param name="result_code">メッセージに変換する result_code</param>
+        /// <returns>結果コードを元に変換されたメッセージ文字列 null終端utf8</returns>
+        [DllImport(dllName)]
+        extern internal static IntPtr voicevox_error_result_to_message(VoicevoxResultCode result_code);
 
     }
 }

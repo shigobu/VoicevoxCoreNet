@@ -25,6 +25,7 @@ namespace VoicevoxCoreNet
         /// <summary>
         /// open_jtalkの辞書ディレクトリ
         /// </summary>
+        /// <remarks>null終端utf8</remarks>
         IntPtr open_jtalk_dict_dir;
     };
 }
