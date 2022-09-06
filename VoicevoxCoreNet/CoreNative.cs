@@ -7,13 +7,21 @@ using System.Threading.Tasks;
 
 namespace VoicevoxCoreNet
 {
+    /// <summary>
+    /// coreライブラリのDllImport実装
+    /// </summary>
     internal class CoreNative
     {
+        /// <summary>
+        /// ライブラリ名
+        /// </summary>
+        const string dllName = "core.dll";
+
         /// <summary>
         /// デフォルトの初期化オプションを生成する
         /// </summary>
         /// <returns>デフォルト値が設定された初期化オプション</returns>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static VoicevoxInitializeOptions voicevox_make_default_initialize_options();
 
         /// <summary>
@@ -21,7 +29,7 @@ namespace VoicevoxCoreNet
         /// </summary>
         /// <param name="options">初期化オプション</param>
         /// <returns>結果コード</returns>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static VoicevoxResultCode voicevox_initialize(VoicevoxInitializeOptions options);
 
         /// <summary>
@@ -29,14 +37,14 @@ namespace VoicevoxCoreNet
         /// </summary>
         /// <param name="speaker_id">読み込むモデルの話者ID</param>
         /// <returns>結果コード</returns>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static VoicevoxResultCode voicevox_load_model(uint speaker_id);
 
         /// <summary>
         /// ハードウェアアクセラレーションがGPUモードか判定する
         /// </summary>
         /// <returns>GPUモードならtrue、そうでないならfalse</returns>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static bool voicevox_is_gpu_mode();
 
         /// <summary>
@@ -44,30 +52,28 @@ namespace VoicevoxCoreNet
         /// </summary>
         /// <param name="speaker_id">読み込むモデルの話者ID</param>
         /// <returns>モデルが読み込まれているのであればtrue、そうでないならfalse</returns>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static bool voicevox_is_model_loaded(uint speaker_id);
 
         /// <summary>
         /// このライブラリの利用を終了し、確保しているリソースを解放する
         /// </summary>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static void voicevox_finalize();
 
         /// <summary>
         /// メタ情報をjsonで取得する
         /// </summary>
         /// <returns>メタ情報のjson文字列</returns>
-        [DllImport("core.dll")]
-        [return : MarshalAs(UnmanagedType.LPUTF8Str)]
-        extern internal static string voicevox_get_metas_json();
+        [DllImport(dllName)]
+        extern internal static IntPtr voicevox_get_metas_json();
 
         /// <summary>
         /// サポートデバイス情報をjsonで取得する
         /// </summary>
         /// <returns>サポートデバイス情報のjson文字列</returns>
-        [DllImport("core.dll")]
-        [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-        extern internal static string voicevox_get_supported_devices_json();
+        [DllImport(dllName)]
+        extern internal static IntPtr voicevox_get_supported_devices_json();
 
         /// <summary>
         /// 音素ごとの長さを推論する
@@ -84,7 +90,7 @@ namespace VoicevoxCoreNet
         /// @param output_predict_duration_data_length uintptr_t 分のメモリ領域が割り当てられていること
         /// @param output_predict_duration_data 成功後にメモリ領域が割り当てられるので::voicevox_predict_duration_data_free で解放する必要がある
         /// </remarks>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static VoicevoxResultCode voicevox_predict_duration(UIntPtr length,
                                                                             long[] phoneme_vector,
                                                                             uint speaker_id,
@@ -95,7 +101,7 @@ namespace VoicevoxCoreNet
         /// voicevox_predict_durationで出力されたデータを解放する
         /// </summary>
         /// <param name="predict_duration_data">確保されたメモリ領域</param>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static void voicevox_predict_duration_data_free(IntPtr predict_duration_data);
 
         /// <summary>
@@ -123,7 +129,7 @@ namespace VoicevoxCoreNet
         /// @param output_predict_intonation_data_length uintptr_t 分のメモリ領域が割り当てられていること
         /// @param output_predict_intonation_data 成功後にメモリ領域が割り当てられるので::voicevox_predict_intonation_data_free で解放する必要がある
         /// </remarks>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static VoicevoxResultCode voicevox_predict_intonation(UIntPtr length,
                                                                               long[] vowel_phoneme_vector,
                                                                               long[] consonant_phoneme_vector,
@@ -139,7 +145,7 @@ namespace VoicevoxCoreNet
         /// voicevox_predict_intonationで出力されたデータを解放する
         /// </summary>
         /// <param name="predict_intonation_data">確保されたメモリ領域</param>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static void voicevox_predict_intonation_data_free(IntPtr predict_intonation_data);
 
         /// <summary>
@@ -160,7 +166,7 @@ namespace VoicevoxCoreNet
         /// @param output_decode_data_length uintptr_t 分のメモリ領域が割り当てられていること
         /// @param output_decode_data 成功後にメモリ領域が割り当てられるので ::voicevox_decode_data_free で解放する必要がある
         /// </remarks>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static VoicevoxResultCode voicevox_decode(UIntPtr length,
                                                                   UIntPtr phoneme_size,
                                                                   float[] f0,
@@ -173,14 +179,14 @@ namespace VoicevoxCoreNet
         /// voicevox_decodeで出力されたデータを解放する
         /// </summary>
         /// <param name="decode_data">確保されたメモリ領域</param>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static void voicevox_decode_data_free(IntPtr decode_data);
 
         /// <summary>
         /// デフォルトの AudioQuery のオプションを生成する
         /// </summary>
         /// <returns>デフォルト値が設定された AudioQuery オプション</returns>
-        [DllImport("core.dll")]
+        [DllImport(dllName)]
         extern internal static VoicevoxAudioQueryOptions voicevox_make_default_audio_query_options();
 
 

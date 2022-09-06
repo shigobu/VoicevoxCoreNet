@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VoicevoxCoreNet
 {
@@ -24,7 +25,6 @@ namespace VoicevoxCoreNet
         /// <summary>
         /// open_jtalkの辞書ディレクトリ
         /// </summary>
-        [MarshalAs(UnmanagedType.LPUTF8Str)]
-        string open_jtalk_dict_dir;
+        IntPtr open_jtalk_dict_dir;
     };
 }
