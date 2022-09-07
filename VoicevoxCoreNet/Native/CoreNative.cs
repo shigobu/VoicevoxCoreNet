@@ -109,7 +109,7 @@ namespace VoicevoxCoreNet.Native
         extern internal static void voicevox_predict_duration_data_free(IntPtr predict_duration_data);
 
         /// <summary>
-        /// モーラごとのF0を推論す
+        /// モーラごとのF0を推論する
         /// </summary>
         /// <param name="length">vowel_phoneme_vector, consonant_phoneme_vector, start_accent_vector, end_accent_vector, start_accent_phrase_vector, end_accent_phrase_vector, output のデータ長</param>
         /// <param name="vowel_phoneme_vector">母音の音素データ</param>

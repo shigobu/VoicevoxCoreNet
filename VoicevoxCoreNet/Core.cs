@@ -107,9 +107,9 @@ namespace VoicevoxCoreNet
         }
 
         /// <summary>
-        /// モーラごとのF0を推論す
+        /// モーラごとのF0を推論する
         /// </summary>
-        /// <param name="length">vowel_phoneme_vector, consonant_phoneme_vector, start_accent_vector, end_accent_vector, start_accent_phrase_vector, end_accent_phrase_vector, output のデータ長<</param>
+        /// <param name="length">vowel_phoneme_vector, consonant_phoneme_vector, start_accent_vector, end_accent_vector, start_accent_phrase_vector, end_accent_phrase_vector, output のデータ長</param>
         /// <param name="vowelPhonemeVector">母音の音素データ</param>
         /// <param name="consonantPhonemeVector">子音の音素データ</param>
         /// <param name="startAccentVector">開始アクセントデータ</param>
