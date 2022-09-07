@@ -59,7 +59,7 @@ namespace VoicevoxCoreNet
         /// open_jtalkの辞書ディレクトリ
         /// </summary>
         /// <remarks>null終端utf8</remarks>
-        byte[] open_jtalk_dict_dir;
+        private byte[] open_jtalk_dict_dir;
 
         /// <summary>
         /// open_jtalkの辞書ディレクトリ
@@ -72,7 +72,7 @@ namespace VoicevoxCoreNet
             }
             set
             {
-                open_jtalk_dict_dir = Encoding.UTF8.GetBytes(value + '\0');
+                open_jtalk_dict_dir = Utf8Converter.GetUTF8ByteWithNullChar(value);
             }
         }
     }

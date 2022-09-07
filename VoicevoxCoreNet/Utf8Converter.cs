@@ -15,5 +15,15 @@ namespace VoicevoxCoreNet
             while (pStringUtf8[len] != 0) len++;
             return Encoding.UTF8.GetString(pStringUtf8, len);
         }
+
+        /// <summary>
+        /// null終端文字が追加されたUTF8エンコードされたバイト配列を作成します。
+        /// </summary>
+        /// <param name="text">変換する文字列</param>
+        /// <returns>null終端文字が追加されたUTF8エンコードされたバイト配列</returns>
+        public static byte[] GetUTF8ByteWithNullChar(string text)
+        {
+            return Encoding.UTF8.GetBytes(text + '\0');
+        }
     }
 }

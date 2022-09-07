@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using VoicevoxCoreNet.Native;
 using System.Runtime.InteropServices;
 
@@ -153,6 +154,73 @@ namespace VoicevoxCoreNet
                 }
             }
         }
+
+        /// <summary>
+        /// decodeを実行する
+        /// </summary>
+        /// <param name="length">f0 , output のデータ長及び phoneme のデータ長に関連する</param>
+        /// <param name="phonemSize">音素のサイズ phoneme のデータ長に関連する</param>
+        /// <param name="f0">基本周波数</param>
+        /// <param name="phonemeVector">音素データ</param>
+        /// <param name="speakerId">話者ID</param>
+        /// <returns>データ</returns>
+        public float[] Decode(uint length,
+                              uint phonemSize,
+                              float[] f0,
+                              float[] phonemeVector,
+                              uint speakerId)
+        {
+            IntPtr data = IntPtr.Zero;
+            try
+            {
+                VoicevoxResultCode resultCode = CoreNative.voicevox_decode((UIntPtr)length, 
+                                                                           (UIntPtr)phonemSize, 
+                                                                           f0, 
+                                                                           phonemeVector,  
+                                                                           speakerId, 
+                                                                           out UIntPtr dataLength, 
+                                                                           out data);
+                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                float[] retVal = new float[dataLength.ToUInt32()];
+                Marshal.Copy(data, retVal, 0, (int)dataLength.ToUInt32());
+                return retVal;
+            }
+            finally
+            {
+                if (data != IntPtr.Zero)
+                {
+                    CoreNative.voicevox_decode_data_free(data);
+                }
+            }
+        }
+
+        /// <summary>
+        /// AudioQuery を実行する
+        /// </summary>
+        /// <param name="text">テキスト</param>
+        /// <param name="speakerId">話者ID</param>
+        /// <param name="options">AudioQueryのオプション</param>
+        /// <returns>AudioQuery を json でフォーマットしたもの</returns>
+        public string AudioQuery(string text, uint speakerId, VoicevoxAudioQueryOptions options)
+        {
+            IntPtr pJsonString = IntPtr.Zero;
+            try
+            {
+                byte[] UTF8text = Utf8Converter.GetUTF8ByteWithNullChar(text);
+                VoicevoxResultCode resultCode = CoreNative.voicevox_audio_query(UTF8text, speakerId, options, out pJsonString);
+                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                return Utf8Converter.MarshalNativeUtf8ToManagedString(pJsonString);
+            }
+            finally
+            {
+                if (pJsonString != IntPtr.Zero)
+                {
+                    CoreNative.voicevox_audio_query_json_free(pJsonString);
+                }
+            }
+        }
+
+
 
 #endregion
 
