@@ -1,5 +1,6 @@
 ﻿using System;
 using VoicevoxCoreNet.Native;
+using System.Runtime.InteropServices;
 
 namespace VoicevoxCoreNet
 {
@@ -21,6 +22,139 @@ namespace VoicevoxCoreNet
             VoicevoxResultCode resultCode = CoreNative.voicevox_initialize(options);
             VoicevoxCoreException.ThrowIfNotOk(resultCode);
         }
+
+#region プロパティ
+        /// <summary>
+        /// ハードウェアアクセラレーションがGPUモードかどうかを取得します。
+        /// </summary>
+        /// <value>GPUモードならtrue、そうでないならfalse</value>
+        public bool IsGpuMode
+        {
+            get
+            {
+                return CoreNative.voicevox_is_gpu_mode();
+            }
+        }
+
+#endregion
+
+#region メソッド
+        /// <summary>
+        /// モデルを読み込む
+        /// </summary>
+        /// <param name="speakerId">読み込むモデルの話者ID</param>
+        public void LoadModel(uint speakerId)
+        {
+            VoicevoxResultCode resultCode = CoreNative.voicevox_load_model(speakerId);
+            VoicevoxCoreException.ThrowIfNotOk(resultCode);
+        }
+
+        /// <summary>
+        /// 指定したspeakerIdのモデルが読み込まれているか判定する
+        /// </summary>
+        /// <param name="speakerId">読み込むモデルの話者ID</param>
+        /// <returns>モデルが読み込まれているのであればtrue、そうでないならfalse</returns>
+        public bool IsModelLoaded(uint speakerId)
+        {
+            return CoreNative.voicevox_is_model_loaded(speakerId);
+        }
+
+        /// <summary>
+        /// メタ情報をjsonで取得する
+        /// </summary>
+        /// <returns>メタ情報のjson文字列</returns>
+        public string GetMetasJson()
+        {
+            IntPtr pJson = CoreNative.voicevox_get_metas_json();
+            return Utf8Converter.MarshalNativeUtf8ToManagedString(pJson);
+        }
+
+        /// <summary>
+        /// サポートデバイス情報をjsonで取得する
+        /// </summary>
+        /// <returns>サポートデバイス情報のjson文字列</returns>
+        public string GetSupportedDevicesJson()
+        {
+            IntPtr pJson = CoreNative.voicevox_get_supported_devices_json();
+            return Utf8Converter.MarshalNativeUtf8ToManagedString(pJson);
+        }
+
+        /// <summary>
+        /// 音素ごとの長さを推論する
+        /// </summary>
+        /// <param name="length">phoneme_vector, output のデータ長</param>
+        /// <param name="phonemeVector">音素データ</param>
+        /// <param name="speakerId">話者ID</param>
+        /// <returns>データ</returns>
+        public float[] predictDuration(uint length, long[] phonemeVector, uint speakerId)
+        {
+            IntPtr data = IntPtr.Zero;
+            try
+            {
+                VoicevoxResultCode resultCode = CoreNative.voicevox_predict_duration((UIntPtr)length, phonemeVector, speakerId, out UIntPtr dataLength, out data);
+                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                float[] retVal = new float[dataLength.ToUInt32()];
+                Marshal.Copy(data, retVal, 0, (int)dataLength.ToUInt32());
+                return retVal;
+            }
+            finally
+            {
+                if (data != IntPtr.Zero)
+                {
+                    CoreNative.voicevox_predict_duration_data_free(data);
+                }
+            }
+        }
+
+        /// <summary>
+        /// モーラごとのF0を推論す
+        /// </summary>
+        /// <param name="length">vowel_phoneme_vector, consonant_phoneme_vector, start_accent_vector, end_accent_vector, start_accent_phrase_vector, end_accent_phrase_vector, output のデータ長<</param>
+        /// <param name="vowelPhonemeVector">母音の音素データ</param>
+        /// <param name="consonantPhonemeVector">子音の音素データ</param>
+        /// <param name="startAccentVector">開始アクセントデータ</param>
+        /// <param name="endAccentVector">終了アクセントデータ</param>
+        /// <param name="startAccentPhraseVector">開始アクセントフレーズデータ</param>
+        /// <param name="endAccentPhraseVector">終了アクセントフレーズデータ</param>
+        /// <param name="speakerId">話者ID</param>
+        /// <returns>データ</returns>
+        public float[] predictIntonation(uint length, 
+                                         long[] vowelPhonemeVector, 
+                                         long[] consonantPhonemeVector, 
+                                         long[] startAccentVector, 
+                                         long[] endAccentVector, 
+                                         long[] startAccentPhraseVector, 
+                                         long[] endAccentPhraseVector, 
+                                         uint speakerId)
+        {
+            IntPtr data = IntPtr.Zero;
+            try
+            {
+                VoicevoxResultCode resultCode = CoreNative.voicevox_predict_intonation((UIntPtr)length, 
+                                                                                       vowelPhonemeVector, 
+                                                                                       consonantPhonemeVector, 
+                                                                                       startAccentVector, 
+                                                                                       endAccentVector, 
+                                                                                       startAccentPhraseVector, 
+                                                                                       endAccentPhraseVector, 
+                                                                                       speakerId, 
+                                                                                       out UIntPtr dataLength, 
+                                                                                       out data);
+                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                float[] retVal = new float[dataLength.ToUInt32()];
+                Marshal.Copy(data, retVal, 0, (int)dataLength.ToUInt32());
+                return retVal;
+            }
+            finally
+            {
+                if (data != IntPtr.Zero)
+                {
+                    CoreNative.voicevox_predict_intonation_data_free(data);
+                }
+            }
+        }
+
+#endregion
 
         /// <summary>
         /// オブジェクトのリソースを安全に開放します。
