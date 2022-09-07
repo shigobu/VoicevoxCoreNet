@@ -19,7 +19,7 @@ namespace VoicevoxCoreNet
         Core(VoicevoxInitializeOptions options)
         {
             VoicevoxResultCode resultCode = CoreNative.voicevox_initialize(options);
-            ThrowVoicevoxCoreException(resultCode);
+            VoicevoxCoreException.ThrowIfNotOk(resultCode);
         }
 
         /// <summary>
@@ -30,20 +30,6 @@ namespace VoicevoxCoreNet
         {
             return CoreNative.voicevox_make_default_initialize_options();
         }
-
-        /// <summary>
-        /// 結果コードが成功以外のときに、例外を投げます。
-        /// </summary>
-        /// <param name="resultCode"></param>
-        /// <exception cref="VoicevoxCoreException">結果コードは成功ではありませんでした。</exception>
-        private static void ThrowVoicevoxCoreException(VoicevoxResultCode resultCode)
-        {
-            if (resultCode != VoicevoxResultCode.VOICEVOX_RESULT_OK)
-            {
-                throw new VoicevoxCoreException(resultCode);
-            }
-        }
-
 
         /// <summary>
         /// オブジェクトのリソースを安全に開放します。
