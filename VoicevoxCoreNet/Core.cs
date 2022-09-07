@@ -2,6 +2,7 @@
 using System.Text;
 using VoicevoxCoreNet.Native;
 using System.Runtime.InteropServices;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VoicevoxCoreNet
 {
@@ -94,7 +95,7 @@ namespace VoicevoxCoreNet
                 VoicevoxResultCode resultCode = CoreNative.voicevox_predict_duration((UIntPtr)phonemeVector.Length, phonemeVector, speakerId, out UIntPtr dataLength, out data);
                 VoicevoxCoreException.ThrowIfNotOk(resultCode);
                 float[] retVal = new float[dataLength.ToUInt32()];
-                Marshal.Copy(data, retVal, 0, (int)dataLength.ToUInt32());
+                Marshal.Copy(data, retVal, 0, retVal.Length);
                 return retVal;
             }
             finally
@@ -140,7 +141,7 @@ namespace VoicevoxCoreNet
                                                                                        out data);
                 VoicevoxCoreException.ThrowIfNotOk(resultCode);
                 float[] retVal = new float[dataLength.ToUInt32()];
-                Marshal.Copy(data, retVal, 0, (int)dataLength.ToUInt32());
+                Marshal.Copy(data, retVal, 0, retVal.Length);
                 return retVal;
             }
             finally
@@ -159,9 +160,7 @@ namespace VoicevoxCoreNet
         /// <param name="phonemeVector">音素データ</param>
         /// <param name="speakerId">話者ID</param>
         /// <returns>データ</returns>
-        public float[] Decode(float[] f0,
-                              float[] phonemeVector,
-                              uint speakerId)
+        public float[] Decode(float[] f0, float[] phonemeVector, uint speakerId)
         {
             IntPtr data = IntPtr.Zero;
             try
@@ -175,7 +174,7 @@ namespace VoicevoxCoreNet
                                                                            out data);
                 VoicevoxCoreException.ThrowIfNotOk(resultCode);
                 float[] retVal = new float[dataLength.ToUInt32()];
-                Marshal.Copy(data, retVal, 0, (int)dataLength.ToUInt32());
+                Marshal.Copy(data, retVal, 0, retVal.Length);
                 return retVal;
             }
             finally
@@ -213,9 +212,63 @@ namespace VoicevoxCoreNet
             }
         }
 
+        /// <summary>
+        /// AudioQuery から音声合成する
+        /// </summary>
+        /// <param name="audioQueryJson">jsonフォーマットされた AudioQuery</param>
+        /// <param name="speakerId">話者ID</param>
+        /// <param name="options">AudioQueryから音声合成オプション</param>
+        /// <returns>wavデータ</returns>
+        public byte[] Synthesis(string audioQueryJson, uint speakerId, VoicevoxSynthesisOptions options)
+        {
+            IntPtr pWaveData = IntPtr.Zero;
+            try
+            {
+                byte[] UTF8text = Utf8Converter.GetUTF8ByteWithNullChar(audioQueryJson);
+                VoicevoxResultCode resultCode = CoreNative.voicevox_synthesis(UTF8text, speakerId, options, out UIntPtr outputWavLength, out pWaveData);
+                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                byte[] wavData = new byte[outputWavLength.ToUInt32()];
+                Marshal.Copy(pWaveData, wavData, 0, wavData.Length);
+                return wavData;
+            }
+            finally
+            {
+                if (pWaveData != IntPtr.Zero)
+                {
+                    CoreNative.voicevox_wav_free(pWaveData);
+                }
+            }
+        }
 
+        /// <summary>
+        /// テキスト音声合成を実行する
+        /// </summary>
+        /// <param name="text">テキスト</param>
+        /// <param name="speakerId">話者ID</param>
+        /// <param name="options">テキスト音声合成オプション</param>
+        /// <returns>wavデータ</returns>
+        public byte[] Tts(string text, uint speakerId, VoicevoxTtsOptions options)
+        {
+            IntPtr pWaveData = IntPtr.Zero;
+            try
+            {
+                byte[] UTF8text = Utf8Converter.GetUTF8ByteWithNullChar(text);
+                VoicevoxResultCode resultCode = CoreNative.voicevox_tts(UTF8text, speakerId, options, out UIntPtr outputWavLength, out pWaveData);
+                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                byte[] wavData = new byte[outputWavLength.ToUInt32()];
+                Marshal.Copy(pWaveData, wavData, 0, wavData.Length);
+                return wavData;
+            }
+            finally
+            {
+                if (pWaveData != IntPtr.Zero)
+                {
+                    CoreNative.voicevox_wav_free(pWaveData);
+                }
+            }
+        }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// オブジェクトのリソースを安全に開放します。
