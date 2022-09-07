@@ -23,15 +23,6 @@ namespace VoicevoxCoreNet
         }
 
         /// <summary>
-        /// デフォルトの初期化オプションを生成する
-        /// </summary>
-        /// <returns>デフォルト値が設定された初期化オプション</returns>
-        public static VoicevoxInitializeOptions MakeDefaultInitializeOption()
-        {
-            return CoreNative.voicevox_make_default_initialize_options();
-        }
-
-        /// <summary>
         /// オブジェクトのリソースを安全に開放します。
         /// </summary>
         protected virtual void Dispose(bool disposing)

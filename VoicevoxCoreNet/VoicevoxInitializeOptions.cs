@@ -11,6 +11,35 @@ namespace VoicevoxCoreNet
     public struct VoicevoxInitializeOptions
     {
         /// <summary>
+        ///オブジェクトを初期値で初期化します。
+        /// </summary>
+        public VoicevoxInitializeOptions()
+        {
+            VoicevoxInitializeOptions option = Native.CoreNative.voicevox_make_default_initialize_options();
+            this.acceleration_mode = option.acceleration_mode;
+            this.cpu_num_threads = option.cpu_num_threads;
+            this.load_all_models = option.load_all_models;
+            this.open_jtalk_dict_dir = null;
+            OpenJtalkDictDir = "";
+        }
+
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// <param name="accelerationMode">ハードウェアアクセラレーションモード</param>
+        /// <param name="cpuNumThreads">CPU利用数を指定</param>
+        /// <param name="loadAllModels">全てのモデルを読み込むかどうか</param>
+        /// <param name="openJtalkDictDir">open_jtalkの辞書ディレクトリ</param>
+        public VoicevoxInitializeOptions(VoicevoxAccelerationMode accelerationMode, ushort cpuNumThreads, bool loadAllModels, string openJtalkDictDir)
+        {
+            this.acceleration_mode = accelerationMode;
+            this.cpu_num_threads = cpuNumThreads;
+            this.load_all_models = loadAllModels;
+            this.open_jtalk_dict_dir = null;
+            OpenJtalkDictDir = openJtalkDictDir;
+        }
+
+        /// <summary>
         /// ハードウェアアクセラレーションモード
         /// </summary>
         public VoicevoxAccelerationMode acceleration_mode;
