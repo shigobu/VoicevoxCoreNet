@@ -83,16 +83,15 @@ namespace VoicevoxCoreNet
         /// <summary>
         /// 音素ごとの長さを推論する
         /// </summary>
-        /// <param name="length">phoneme_vector, output のデータ長</param>
         /// <param name="phonemeVector">音素データ</param>
         /// <param name="speakerId">話者ID</param>
         /// <returns>データ</returns>
-        public float[] predictDuration(uint length, long[] phonemeVector, uint speakerId)
+        public float[] PredictDuration(long[] phonemeVector, uint speakerId)
         {
             IntPtr data = IntPtr.Zero;
             try
             {
-                VoicevoxResultCode resultCode = CoreNative.voicevox_predict_duration((UIntPtr)length, phonemeVector, speakerId, out UIntPtr dataLength, out data);
+                VoicevoxResultCode resultCode = CoreNative.voicevox_predict_duration((UIntPtr)phonemeVector.Length, phonemeVector, speakerId, out UIntPtr dataLength, out data);
                 VoicevoxCoreException.ThrowIfNotOk(resultCode);
                 float[] retVal = new float[dataLength.ToUInt32()];
                 Marshal.Copy(data, retVal, 0, (int)dataLength.ToUInt32());
@@ -110,7 +109,6 @@ namespace VoicevoxCoreNet
         /// <summary>
         /// モーラごとのF0を推論する
         /// </summary>
-        /// <param name="length">vowel_phoneme_vector, consonant_phoneme_vector, start_accent_vector, end_accent_vector, start_accent_phrase_vector, end_accent_phrase_vector, output のデータ長</param>
         /// <param name="vowelPhonemeVector">母音の音素データ</param>
         /// <param name="consonantPhonemeVector">子音の音素データ</param>
         /// <param name="startAccentVector">開始アクセントデータ</param>
@@ -119,8 +117,7 @@ namespace VoicevoxCoreNet
         /// <param name="endAccentPhraseVector">終了アクセントフレーズデータ</param>
         /// <param name="speakerId">話者ID</param>
         /// <returns>データ</returns>
-        public float[] predictIntonation(uint length, 
-                                         long[] vowelPhonemeVector, 
+        public float[] predictIntonation(long[] vowelPhonemeVector, 
                                          long[] consonantPhonemeVector, 
                                          long[] startAccentVector, 
                                          long[] endAccentVector, 
@@ -131,7 +128,7 @@ namespace VoicevoxCoreNet
             IntPtr data = IntPtr.Zero;
             try
             {
-                VoicevoxResultCode resultCode = CoreNative.voicevox_predict_intonation((UIntPtr)length, 
+                VoicevoxResultCode resultCode = CoreNative.voicevox_predict_intonation((UIntPtr)vowelPhonemeVector.Length, 
                                                                                        vowelPhonemeVector, 
                                                                                        consonantPhonemeVector, 
                                                                                        startAccentVector, 
@@ -158,23 +155,19 @@ namespace VoicevoxCoreNet
         /// <summary>
         /// decodeを実行する
         /// </summary>
-        /// <param name="length">f0 , output のデータ長及び phoneme のデータ長に関連する</param>
-        /// <param name="phonemSize">音素のサイズ phoneme のデータ長に関連する</param>
         /// <param name="f0">基本周波数</param>
         /// <param name="phonemeVector">音素データ</param>
         /// <param name="speakerId">話者ID</param>
         /// <returns>データ</returns>
-        public float[] Decode(uint length,
-                              uint phonemSize,
-                              float[] f0,
+        public float[] Decode(float[] f0,
                               float[] phonemeVector,
                               uint speakerId)
         {
             IntPtr data = IntPtr.Zero;
             try
             {
-                VoicevoxResultCode resultCode = CoreNative.voicevox_decode((UIntPtr)length, 
-                                                                           (UIntPtr)phonemSize, 
+                VoicevoxResultCode resultCode = CoreNative.voicevox_decode((UIntPtr)f0.Length, 
+                                                                           (UIntPtr)phonemeVector.Length, 
                                                                            f0, 
                                                                            phonemeVector,  
                                                                            speakerId, 
