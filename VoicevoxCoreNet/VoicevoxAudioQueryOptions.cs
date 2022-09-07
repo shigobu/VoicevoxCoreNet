@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using VoicevoxCoreNet.Native;
 
 namespace VoicevoxCoreNet
 {
@@ -6,11 +7,20 @@ namespace VoicevoxCoreNet
     /// Audio query のオプション
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    struct VoicevoxAudioQueryOptions
+    public struct VoicevoxAudioQueryOptions
     {
+        /// <summary>
+        /// オブジェクトを初期値で初期化します。
+        /// </summary>
+        public VoicevoxAudioQueryOptions()
+        {
+            VoicevoxAudioQueryOptions options = CoreNative.voicevox_make_default_audio_query_options();
+            kana = options.kana;
+        }
+
         /// <summary>
         /// aquestalk形式のkanaとしてテキストを解釈する
         /// </summary>
-        bool kana;
+        public bool kana;
     }
 }
