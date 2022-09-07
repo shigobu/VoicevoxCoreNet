@@ -3,7 +3,7 @@
     /// <summary>
     /// 処理結果を示す結果コード
     /// </summary>
-    public enum VoicevoxResultCode
+    public enum ResultCode
     {
         /// <summary>
         /// 成功

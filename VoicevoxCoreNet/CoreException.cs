@@ -8,13 +8,13 @@ namespace VoicevoxCoreNet
     /// <summary>
     /// VOICEVOX COREで発生したエラーを表します。
     /// </summary>
-    public class VoicevoxCoreException : Exception
+    public class CoreException : Exception
     {
         /// <summary>
         /// VoicevoxResultCodeを使用して、オブジェクトを初期化します。
         /// </summary>
         /// <param name="resultCode">結果コード</param>
-        public VoicevoxCoreException(VoicevoxResultCode resultCode) : base()
+        public CoreException(ResultCode resultCode) : base()
         {
             IntPtr pMessage = CoreNative.voicevox_error_result_to_message(resultCode);
             _message = Utf8Converter.MarshalNativeUtf8ToManagedString(pMessage);
@@ -29,12 +29,12 @@ namespace VoicevoxCoreNet
         /// 結果コードが成功以外のときに、例外を投げます。
         /// </summary>
         /// <param name="resultCode"></param>
-        /// <exception cref="VoicevoxCoreException">結果コードは成功ではありませんでした。</exception>
-        internal static void ThrowIfNotOk(VoicevoxResultCode resultCode)
+        /// <exception cref="CoreException">結果コードは成功ではありませんでした。</exception>
+        internal static void ThrowIfNotOk(ResultCode resultCode)
         {
-            if (resultCode != VoicevoxResultCode.VOICEVOX_RESULT_OK)
+            if (resultCode != ResultCode.VOICEVOX_RESULT_OK)
             {
-                throw new VoicevoxCoreException(resultCode);
+                throw new CoreException(resultCode);
             }
         }
     }

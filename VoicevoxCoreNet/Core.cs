@@ -19,10 +19,10 @@ namespace VoicevoxCoreNet
         /// VoicevoxInitializeOptionsを使用して、オブジェクトの初期化を行います。
         /// </summary>
         /// <param name="options">初期化オプション</param>
-        Core(VoicevoxInitializeOptions options)
+        Core(InitializeOptions options)
         {
-            VoicevoxResultCode resultCode = CoreNative.voicevox_initialize(options);
-            VoicevoxCoreException.ThrowIfNotOk(resultCode);
+            ResultCode resultCode = CoreNative.voicevox_initialize(options);
+            CoreException.ThrowIfNotOk(resultCode);
         }
 
 #region プロパティ
@@ -47,8 +47,8 @@ namespace VoicevoxCoreNet
         /// <param name="speakerId">読み込むモデルの話者ID</param>
         public void LoadModel(uint speakerId)
         {
-            VoicevoxResultCode resultCode = CoreNative.voicevox_load_model(speakerId);
-            VoicevoxCoreException.ThrowIfNotOk(resultCode);
+            ResultCode resultCode = CoreNative.voicevox_load_model(speakerId);
+            CoreException.ThrowIfNotOk(resultCode);
         }
 
         /// <summary>
@@ -92,8 +92,8 @@ namespace VoicevoxCoreNet
             IntPtr data = IntPtr.Zero;
             try
             {
-                VoicevoxResultCode resultCode = CoreNative.voicevox_predict_duration((UIntPtr)phonemeVector.Length, phonemeVector, speakerId, out UIntPtr dataLength, out data);
-                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                ResultCode resultCode = CoreNative.voicevox_predict_duration((UIntPtr)phonemeVector.Length, phonemeVector, speakerId, out UIntPtr dataLength, out data);
+                CoreException.ThrowIfNotOk(resultCode);
                 float[] retVal = new float[dataLength.ToUInt32()];
                 Marshal.Copy(data, retVal, 0, retVal.Length);
                 return retVal;
@@ -129,7 +129,7 @@ namespace VoicevoxCoreNet
             IntPtr data = IntPtr.Zero;
             try
             {
-                VoicevoxResultCode resultCode = CoreNative.voicevox_predict_intonation((UIntPtr)vowelPhonemeVector.Length, 
+                ResultCode resultCode = CoreNative.voicevox_predict_intonation((UIntPtr)vowelPhonemeVector.Length, 
                                                                                        vowelPhonemeVector, 
                                                                                        consonantPhonemeVector, 
                                                                                        startAccentVector, 
@@ -139,7 +139,7 @@ namespace VoicevoxCoreNet
                                                                                        speakerId, 
                                                                                        out UIntPtr dataLength, 
                                                                                        out data);
-                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                CoreException.ThrowIfNotOk(resultCode);
                 float[] retVal = new float[dataLength.ToUInt32()];
                 Marshal.Copy(data, retVal, 0, retVal.Length);
                 return retVal;
@@ -165,14 +165,14 @@ namespace VoicevoxCoreNet
             IntPtr data = IntPtr.Zero;
             try
             {
-                VoicevoxResultCode resultCode = CoreNative.voicevox_decode((UIntPtr)f0.Length, 
+                ResultCode resultCode = CoreNative.voicevox_decode((UIntPtr)f0.Length, 
                                                                            (UIntPtr)phonemeVector.Length, 
                                                                            f0, 
                                                                            phonemeVector,  
                                                                            speakerId, 
                                                                            out UIntPtr dataLength, 
                                                                            out data);
-                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                CoreException.ThrowIfNotOk(resultCode);
                 float[] retVal = new float[dataLength.ToUInt32()];
                 Marshal.Copy(data, retVal, 0, retVal.Length);
                 return retVal;
@@ -193,14 +193,14 @@ namespace VoicevoxCoreNet
         /// <param name="speakerId">話者ID</param>
         /// <param name="options">AudioQueryのオプション</param>
         /// <returns>AudioQuery を json でフォーマットしたもの</returns>
-        public string AudioQuery(string text, uint speakerId, VoicevoxAudioQueryOptions options)
+        public string AudioQuery(string text, uint speakerId, AudioQueryOptions options)
         {
             IntPtr pJsonString = IntPtr.Zero;
             try
             {
                 byte[] UTF8text = Utf8Converter.GetUTF8ByteWithNullChar(text);
-                VoicevoxResultCode resultCode = CoreNative.voicevox_audio_query(UTF8text, speakerId, options, out pJsonString);
-                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                ResultCode resultCode = CoreNative.voicevox_audio_query(UTF8text, speakerId, options, out pJsonString);
+                CoreException.ThrowIfNotOk(resultCode);
                 return Utf8Converter.MarshalNativeUtf8ToManagedString(pJsonString);
             }
             finally
@@ -219,14 +219,14 @@ namespace VoicevoxCoreNet
         /// <param name="speakerId">話者ID</param>
         /// <param name="options">AudioQueryから音声合成オプション</param>
         /// <returns>wavデータ</returns>
-        public byte[] Synthesis(string audioQueryJson, uint speakerId, VoicevoxSynthesisOptions options)
+        public byte[] Synthesis(string audioQueryJson, uint speakerId, SynthesisOptions options)
         {
             IntPtr pWaveData = IntPtr.Zero;
             try
             {
                 byte[] UTF8text = Utf8Converter.GetUTF8ByteWithNullChar(audioQueryJson);
-                VoicevoxResultCode resultCode = CoreNative.voicevox_synthesis(UTF8text, speakerId, options, out UIntPtr outputWavLength, out pWaveData);
-                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                ResultCode resultCode = CoreNative.voicevox_synthesis(UTF8text, speakerId, options, out UIntPtr outputWavLength, out pWaveData);
+                CoreException.ThrowIfNotOk(resultCode);
                 byte[] wavData = new byte[outputWavLength.ToUInt32()];
                 Marshal.Copy(pWaveData, wavData, 0, wavData.Length);
                 return wavData;
@@ -247,14 +247,14 @@ namespace VoicevoxCoreNet
         /// <param name="speakerId">話者ID</param>
         /// <param name="options">テキスト音声合成オプション</param>
         /// <returns>wavデータ</returns>
-        public byte[] Tts(string text, uint speakerId, VoicevoxTtsOptions options)
+        public byte[] Tts(string text, uint speakerId, TtsOptions options)
         {
             IntPtr pWaveData = IntPtr.Zero;
             try
             {
                 byte[] UTF8text = Utf8Converter.GetUTF8ByteWithNullChar(text);
-                VoicevoxResultCode resultCode = CoreNative.voicevox_tts(UTF8text, speakerId, options, out UIntPtr outputWavLength, out pWaveData);
-                VoicevoxCoreException.ThrowIfNotOk(resultCode);
+                ResultCode resultCode = CoreNative.voicevox_tts(UTF8text, speakerId, options, out UIntPtr outputWavLength, out pWaveData);
+                CoreException.ThrowIfNotOk(resultCode);
                 byte[] wavData = new byte[outputWavLength.ToUInt32()];
                 Marshal.Copy(pWaveData, wavData, 0, wavData.Length);
                 return wavData;

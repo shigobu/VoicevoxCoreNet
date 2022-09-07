@@ -7,14 +7,14 @@ namespace VoicevoxCoreNet
     /// Audio query のオプション
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct VoicevoxAudioQueryOptions
+    public struct AudioQueryOptions
     {
         /// <summary>
         /// オブジェクトを初期値で初期化します。
         /// </summary>
-        public VoicevoxAudioQueryOptions()
+        public AudioQueryOptions()
         {
-            VoicevoxAudioQueryOptions options = CoreNative.voicevox_make_default_audio_query_options();
+            AudioQueryOptions options = CoreNative.voicevox_make_default_audio_query_options();
             kana = options.kana;
         }
 

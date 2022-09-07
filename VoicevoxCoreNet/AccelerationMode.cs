@@ -3,7 +3,7 @@
     /// <summary>
     /// ハードウェアアクセラレーションモードを設定する設定値
     /// </summary>
-    public enum VoicevoxAccelerationMode
+    public enum AccelerationMode
     {
         /// <summary>
         /// 実行環境に合った適切なハードウェアアクセラレーションモードを選択する

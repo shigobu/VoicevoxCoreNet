@@ -7,14 +7,14 @@ namespace VoicevoxCoreNet
     /// テキスト音声合成オプション
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct VoicevoxTtsOptions
+    public struct TtsOptions
     {
         /// <summary>
         /// 初期値でオブジェクトを初期化します。
         /// </summary>
-        public VoicevoxTtsOptions()
+        public TtsOptions()
         {
-            VoicevoxTtsOptions options = CoreNative.voicevox_make_default_tts_options();
+            TtsOptions options = CoreNative.voicevox_make_default_tts_options();
             kana = options.kana;
             enable_interrogative_upspeak = options.enable_interrogative_upspeak;
         }

@@ -6,7 +6,7 @@ namespace VoicevoxCoreNet
     /// voicevox_synthesis` のオプション
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct VoicevoxSynthesisOptions
+    public struct SynthesisOptions
     {
         /// <summary>
         /// 疑問文の調整を有効にする

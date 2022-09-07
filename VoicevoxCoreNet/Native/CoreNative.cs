@@ -26,7 +26,7 @@ namespace VoicevoxCoreNet.Native
         /// </summary>
         /// <returns>デフォルト値が設定された初期化オプション</returns>
         [DllImport(dllName)]
-        extern internal static VoicevoxInitializeOptions voicevox_make_default_initialize_options();
+        extern internal static InitializeOptions voicevox_make_default_initialize_options();
 
         /// <summary>
         /// 初期化する
@@ -34,7 +34,7 @@ namespace VoicevoxCoreNet.Native
         /// <param name="options">初期化オプション</param>
         /// <returns>結果コード</returns>
         [DllImport(dllName)]
-        extern internal static VoicevoxResultCode voicevox_initialize(VoicevoxInitializeOptions options);
+        extern internal static ResultCode voicevox_initialize(InitializeOptions options);
 
         /// <summary>
         /// モデルを読み込む
@@ -42,7 +42,7 @@ namespace VoicevoxCoreNet.Native
         /// <param name="speaker_id">読み込むモデルの話者ID</param>
         /// <returns>結果コード</returns>
         [DllImport(dllName)]
-        extern internal static VoicevoxResultCode voicevox_load_model(uint speaker_id);
+        extern internal static ResultCode voicevox_load_model(uint speaker_id);
 
         /// <summary>
         /// ハードウェアアクセラレーションがGPUモードか判定する
@@ -95,7 +95,7 @@ namespace VoicevoxCoreNet.Native
         /// @param output_predict_duration_data 成功後にメモリ領域が割り当てられるので::voicevox_predict_duration_data_free で解放する必要がある
         /// </remarks>
         [DllImport(dllName)]
-        extern internal static VoicevoxResultCode voicevox_predict_duration(UIntPtr length,
+        extern internal static ResultCode voicevox_predict_duration(UIntPtr length,
                                                                             long[] phoneme_vector,
                                                                             uint speaker_id,
                                                                             out UIntPtr output_predict_duration_data_length,
@@ -134,7 +134,7 @@ namespace VoicevoxCoreNet.Native
         /// @param output_predict_intonation_data 成功後にメモリ領域が割り当てられるので::voicevox_predict_intonation_data_free で解放する必要がある
         /// </remarks>
         [DllImport(dllName)]
-        extern internal static VoicevoxResultCode voicevox_predict_intonation(UIntPtr length,
+        extern internal static ResultCode voicevox_predict_intonation(UIntPtr length,
                                                                               long[] vowel_phoneme_vector,
                                                                               long[] consonant_phoneme_vector,
                                                                               long[] start_accent_vector,
@@ -171,7 +171,7 @@ namespace VoicevoxCoreNet.Native
         /// @param output_decode_data 成功後にメモリ領域が割り当てられるので ::voicevox_decode_data_free で解放する必要がある
         /// </remarks>
         [DllImport(dllName)]
-        extern internal static VoicevoxResultCode voicevox_decode(UIntPtr length,
+        extern internal static ResultCode voicevox_decode(UIntPtr length,
                                                                   UIntPtr phoneme_size,
                                                                   float[] f0,
                                                                   float[] phoneme_vector,
@@ -191,7 +191,7 @@ namespace VoicevoxCoreNet.Native
         /// </summary>
         /// <returns>デフォルト値が設定された AudioQuery オプション</returns>
         [DllImport(dllName)]
-        extern internal static VoicevoxAudioQueryOptions voicevox_make_default_audio_query_options();
+        extern internal static AudioQueryOptions voicevox_make_default_audio_query_options();
 
         /// <summary>
         /// AudioQuery を実行する
@@ -207,9 +207,9 @@ namespace VoicevoxCoreNet.Native
         /// @param output_audio_query_json 自動でheapメモリが割り当てられるので ::voicevox_audio_query_json_free で解放する必要がある
         /// </remarks>
         [DllImport(dllName)]
-        extern internal static VoicevoxResultCode voicevox_audio_query(byte[] text,
+        extern internal static ResultCode voicevox_audio_query(byte[] text,
                                                                        uint speaker_id,
-                                                                       VoicevoxAudioQueryOptions options,
+                                                                       AudioQueryOptions options,
                                                                        out IntPtr output_audio_query_json);
 
         /// <summary>
@@ -227,9 +227,9 @@ namespace VoicevoxCoreNet.Native
         /// @param output_wav 自動で output_wav_length 分のデータが割り当てられるので ::voicevox_wav_free で解放する必要がある
         /// </remarks>
         [DllImport(dllName)]
-        extern internal static VoicevoxResultCode voicevox_synthesis(byte[] audio_query_json,
+        extern internal static ResultCode voicevox_synthesis(byte[] audio_query_json,
                                                                      uint speaker_id,
-                                                                     VoicevoxSynthesisOptions options,
+                                                                     SynthesisOptions options,
                                                                      out UIntPtr output_wav_length,
                                                                      out IntPtr output_wav);
 
@@ -238,7 +238,7 @@ namespace VoicevoxCoreNet.Native
         /// </summary>
         /// <returns>テキスト音声合成オプション</returns>
         [DllImport(dllName)]
-        extern internal static VoicevoxTtsOptions voicevox_make_default_tts_options();
+        extern internal static TtsOptions voicevox_make_default_tts_options();
 
         /// <summary>
         /// テキスト音声合成を実行する
@@ -255,9 +255,9 @@ namespace VoicevoxCoreNet.Native
         /// @param output_wav は自動で output_wav_length 分のデータが割り当てられるので ::voicevox_wav_free で解放する必要がある
         /// </remarks>
         [DllImport(dllName)]
-        extern internal static VoicevoxResultCode voicevox_tts(byte[] text,
+        extern internal static ResultCode voicevox_tts(byte[] text,
                                                                uint speaker_id,
-                                                               VoicevoxTtsOptions options,
+                                                               TtsOptions options,
                                                                out UIntPtr output_wav_length,
                                                                out IntPtr output_wav);
 
@@ -289,7 +289,7 @@ namespace VoicevoxCoreNet.Native
         /// <param name="result_code">メッセージに変換する result_code</param>
         /// <returns>結果コードを元に変換されたメッセージ文字列 null終端utf8</returns>
         [DllImport(dllName)]
-        extern internal static IntPtr voicevox_error_result_to_message(VoicevoxResultCode result_code);
+        extern internal static IntPtr voicevox_error_result_to_message(ResultCode result_code);
 
     }
 }
