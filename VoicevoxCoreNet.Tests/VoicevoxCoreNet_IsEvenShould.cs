@@ -32,7 +32,7 @@ public class VoicevoxCoreNet_IsEvenShould
     /// <returns>OpenJtalk辞書のパス</returns>
     public string GetOpenJtalkDictDir()
     {
-        return Path.Combine(GetThisAppDirectory(), "open_jtalk_dic_utf_8-1.11");
+        return Path.Combine(GetThisAppDirectory() ?? "", "open_jtalk_dic_utf_8-1.11");
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ public class VoicevoxCoreNet_IsEvenShould
     /// 実行中のコードを格納しているアセンブリのある場所を返します。
     /// </summary>
     /// <returns></returns>
-    static public string GetThisAppDirectory()
+    static public string? GetThisAppDirectory()
     {
         string appPath = GetThisAssembly().Location;
         return Path.GetDirectoryName(appPath);
