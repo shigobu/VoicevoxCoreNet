@@ -15,10 +15,9 @@ namespace VoicevoxCoreNet
         /// </summary>
         public InitializeOptions()
         {
-            InitializeOptions option = Native.CoreNative.voicevox_make_default_initialize_options();
-            this.acceleration_mode = option.acceleration_mode;
-            this.cpu_num_threads = option.cpu_num_threads;
-            this.load_all_models = option.load_all_models;
+            this.acceleration_mode = AccelerationMode.VOICEVOX_ACCELERATION_MODE_CPU;
+            this.cpu_num_threads = 0;
+            this.load_all_models = true;
             this.open_jtalk_dict_dir = null;
             OpenJtalkDictDir = "";
         }
