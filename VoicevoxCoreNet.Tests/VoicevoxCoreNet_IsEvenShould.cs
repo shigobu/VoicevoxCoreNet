@@ -11,7 +11,8 @@ public class VoicevoxCoreNet_IsEvenShould
     [Fact]
     public void CoreObject_LoadModel()
     {
-
+        Core core = GetDefaultCoreObject();
+        core.LoadModel(0);
     }
 
     /// <summary>
