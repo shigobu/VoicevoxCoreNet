@@ -10,6 +10,13 @@ dotnet build
 
 Visual Studioでビルドもできます。
 
+## テスト
+```
+dotnet test
+```
+
 ## 開発環境
+Windows 10  
 Microsoft Visual Studio Community 2022  
-C#
+C#  
+.NET Standard 2.0
