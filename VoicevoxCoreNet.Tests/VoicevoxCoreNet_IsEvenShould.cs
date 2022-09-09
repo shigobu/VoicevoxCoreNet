@@ -21,8 +21,7 @@ public class VoicevoxCoreNet_IsEvenShould
     /// <returns></returns>
     public Core GetDefaultCoreObject()
     {
-        InitializeOptions options = new InitializeOptions();
-        options.OpenJtalkDictDir = GetOpenJtalkDictDir();
+        InitializeOptions options = new InitializeOptions(GetOpenJtalkDictDir());
         return new Core(options);
     }
 

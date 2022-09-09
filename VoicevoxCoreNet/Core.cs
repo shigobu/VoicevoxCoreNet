@@ -21,7 +21,7 @@ namespace VoicevoxCoreNet
         /// <param name="options">初期化オプション</param>
         public Core(InitializeOptions options)
         {
-            ResultCode resultCode = CoreNative.voicevox_initialize(options);
+            ResultCode resultCode = CoreNative.voicevox_initialize(options.nativeObject);
             CoreException.ThrowIfNotOk(resultCode);
         }
 
