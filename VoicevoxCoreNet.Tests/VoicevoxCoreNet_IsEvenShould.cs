@@ -64,27 +64,31 @@ public class VoicevoxCoreNet_IsEvenShould
     }
 
     [Theory]
-    [InlineData(0)]
-    [InlineData(1)]
-    public void CoreObject_AudioQuery(uint speakerId)
+    [InlineData(0, true)]
+    [InlineData(0, false)]
+    [InlineData(1, true)]
+    [InlineData(1, false)]
+    public void CoreObject_AudioQuery(uint speakerId, bool kana)
     {
         // Given
         Core core = GetDefaultCoreObject();
         core.LoadModel(speakerId);
         AudioQueryOptions options = new AudioQueryOptions()
         {
-            kana = false
+            kana = kana
         };
         // When
-        string json = core.AudioQuery("あいうえお", speakerId, options);
+        string json = core.AudioQuery("ディイプラ'アニングワ/バンノ'オヤクデワ/アリマセ'ン", speakerId, options);
         // Then
         Assert.NotEmpty(json);
     }
 
     [Theory]
-    [InlineData(0)]
-    [InlineData(1)]
-    public void CoreObject_Synthesis(uint speakerId)
+    [InlineData(0, true)]
+    [InlineData(0, false)]
+    [InlineData(1, true)]
+    [InlineData(1, false)]
+    public void CoreObject_Synthesis(uint speakerId, bool enableInterrogativeUpspeak)
     {
         // Given
         Core core = GetDefaultCoreObject();
@@ -94,7 +98,10 @@ public class VoicevoxCoreNet_IsEvenShould
             kana = false
         };
         string json = core.AudioQuery("あいうえお", speakerId, audioQueryOptions);
-        SynthesisOptions synthesisOptions = new SynthesisOptions();
+        SynthesisOptions synthesisOptions = new SynthesisOptions()
+        {
+            enable_interrogative_upspeak = enableInterrogativeUpspeak
+        };
         // When
         byte[] wavData = core.Synthesis(json, speakerId, synthesisOptions);
         // Then
