@@ -7,73 +7,114 @@ namespace VoicevoxCoreNet
     /// <summary>
     /// 初期化オプション
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct InitializeOptions
+    public class InitializeOptions : IDisposable
     {
         /// <summary>
-        ///オブジェクトを初期値で初期化します。
+        /// openJtalk辞書の場所を指定して、オブジェクトを初期化します。
         /// </summary>
-        public InitializeOptions()
+        /// <param name="openJtalkDictDir">openJtalk辞書の場所</param>
+        public InitializeOptions(string openJtalkDictDir)
         {
-            InitializeOptions option = Native.CoreNative.voicevox_make_default_initialize_options();
-            this.acceleration_mode = option.acceleration_mode;
-            this.cpu_num_threads = option.cpu_num_threads;
-            this.load_all_models = option.load_all_models;
-            this.open_jtalk_dict_dir = null;
-            OpenJtalkDictDir = "";
+            nativeObject = Native.CoreNative.voicevox_make_default_initialize_options();
+            nativeObject.open_jtalk_dict_dir = Utf8Converter.AllocConvertManagedStringToNativeUtf8(openJtalkDictDir);
         }
 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        /// <param name="accelerationMode">ハードウェアアクセラレーションモード</param>
-        /// <param name="cpuNumThreads">CPU利用数を指定</param>
-        /// <param name="loadAllModels">全てのモデルを読み込むかどうか</param>
-        /// <param name="openJtalkDictDir">open_jtalkの辞書ディレクトリ</param>
-        public InitializeOptions(AccelerationMode accelerationMode, ushort cpuNumThreads, bool loadAllModels, string openJtalkDictDir)
-        {
-            this.acceleration_mode = accelerationMode;
-            this.cpu_num_threads = cpuNumThreads;
-            this.load_all_models = loadAllModels;
-            this.open_jtalk_dict_dir = null;
-            OpenJtalkDictDir = openJtalkDictDir;
-        }
+        internal Native.InitializeOptionsNative nativeObject;
 
         /// <summary>
         /// ハードウェアアクセラレーションモード
         /// </summary>
-        public AccelerationMode acceleration_mode;
+        public AccelerationMode Acceleration 
+        {
+            get
+            {
+                return nativeObject.acceleration_mode;
+            } 
+            set
+            {
+                nativeObject.acceleration_mode = value;
+            }
+        }
 
         /// <summary>
         /// CPU利用数を指定
         /// 0を指定すると環境に合わせたCPUが利用される
         /// </summary>
-        public ushort cpu_num_threads;
+        public ushort CpuNumThreads
+        {
+            get
+            {
+                return nativeObject.cpu_num_threads;
+            }
+            set
+            {
+                nativeObject.cpu_num_threads = value;
+            }
+        }
 
         /// <summary>
         /// 全てのモデルを読み込む
         /// </summary>
-        public bool load_all_models;
+        public bool LoadAllModels
+        {
+            get
+            {
+                return nativeObject.load_all_models;
+            }
+            set
+            {
+                nativeObject.load_all_models = value;
+            }
+        }
 
         /// <summary>
         /// open_jtalkの辞書ディレクトリ
         /// </summary>
-        /// <remarks>null終端utf8</remarks>
-        private byte[] open_jtalk_dict_dir;
-
-        /// <summary>
-        /// open_jtalkの辞書ディレクトリ
-        /// </summary>
+        /// <value>open_jtalkの辞書ディレクトリ</value>
         public string OpenJtalkDictDir
         {
             get
             {
-                return Encoding.UTF8.GetString(open_jtalk_dict_dir, 0,  open_jtalk_dict_dir.Length - 1);
+                return Utf8Converter.MarshalNativeUtf8ToManagedString(nativeObject.open_jtalk_dict_dir);
             }
-            set
+        }
+
+        private bool disposedValue;
+
+        /// <summary>
+        /// オブジェクトのリソースを安全に開放します。
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
             {
-                open_jtalk_dict_dir = Utf8Converter.GetUTF8ByteWithNullChar(value);
+                if (disposing)
+                {
+                    // TODO: マネージド状態を破棄します (マネージド オブジェクト)
+                }
+
+                Marshal.FreeHGlobal(nativeObject.open_jtalk_dict_dir);
+                disposedValue = true;
             }
+        }
+
+        /// <summary>
+        /// ファイナライザー
+        /// </summary>
+        ~InitializeOptions()
+        {
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: false);
+        }
+
+        /// <summary>
+        /// オブジェクトのリソースを安全に開放します。
+        /// </summary>
+        public void Dispose()
+        {
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

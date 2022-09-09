@@ -26,7 +26,7 @@ namespace VoicevoxCoreNet.Native
         /// </summary>
         /// <returns>デフォルト値が設定された初期化オプション</returns>
         [DllImport(dllName)]
-        extern internal static InitializeOptions voicevox_make_default_initialize_options();
+        extern internal static InitializeOptionsNative voicevox_make_default_initialize_options();
 
         /// <summary>
         /// 初期化する
@@ -34,7 +34,7 @@ namespace VoicevoxCoreNet.Native
         /// <param name="options">初期化オプション</param>
         /// <returns>結果コード</returns>
         [DllImport(dllName)]
-        extern internal static ResultCode voicevox_initialize(InitializeOptions options);
+        extern internal static ResultCode voicevox_initialize(InitializeOptionsNative options);
 
         /// <summary>
         /// モデルを読み込む
@@ -49,6 +49,7 @@ namespace VoicevoxCoreNet.Native
         /// </summary>
         /// <returns>GPUモードならtrue、そうでないならfalse</returns>
         [DllImport(dllName)]
+        [return: MarshalAs(UnmanagedType.U1)]
         extern internal static bool voicevox_is_gpu_mode();
 
         /// <summary>
@@ -57,6 +58,7 @@ namespace VoicevoxCoreNet.Native
         /// <param name="speaker_id">読み込むモデルの話者ID</param>
         /// <returns>モデルが読み込まれているのであればtrue、そうでないならfalse</returns>
         [DllImport(dllName)]
+        [return: MarshalAs(UnmanagedType.U1)]
         extern internal static bool voicevox_is_model_loaded(uint speaker_id);
 
         /// <summary>

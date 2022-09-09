@@ -1,11 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace VoicevoxCoreNet
 {
     internal class Utf8Converter
     {
+        public static unsafe IntPtr AllocConvertManagedStringToNativeUtf8(string input) 
+        {
+            fixed (char* pInput = input) 
+            {
+                var len = Encoding.UTF8.GetByteCount(pInput, input.Length);
+                var pResult = (byte*)Marshal.AllocHGlobal(len + 1).ToPointer();
+                var bytesWritten = Encoding.UTF8.GetBytes(pInput, input.Length, pResult, len);
+                pResult[len] = 0;
+                return (IntPtr)pResult;
+            }
+        }
+
+
         public static unsafe string MarshalNativeUtf8ToManagedString(IntPtr pStringUtf8)
             => MarshalNativeUtf8ToManagedString((byte*)pStringUtf8);
 

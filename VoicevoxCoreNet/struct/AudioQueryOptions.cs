@@ -21,6 +21,7 @@ namespace VoicevoxCoreNet
         /// <summary>
         /// aquestalk形式のkanaとしてテキストを解釈する
         /// </summary>
+        [MarshalAs(UnmanagedType.U1)]
         public bool kana;
     }
 }

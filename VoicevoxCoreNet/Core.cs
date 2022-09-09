@@ -19,9 +19,9 @@ namespace VoicevoxCoreNet
         /// VoicevoxInitializeOptionsを使用して、オブジェクトの初期化を行います。
         /// </summary>
         /// <param name="options">初期化オプション</param>
-        Core(InitializeOptions options)
+        public Core(InitializeOptions options)
         {
-            ResultCode resultCode = CoreNative.voicevox_initialize(options);
+            ResultCode resultCode = CoreNative.voicevox_initialize(options.nativeObject);
             CoreException.ThrowIfNotOk(resultCode);
         }
 
