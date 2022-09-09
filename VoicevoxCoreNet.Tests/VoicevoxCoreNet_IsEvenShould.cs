@@ -29,9 +29,17 @@ public class VoicevoxCoreNet_IsEvenShould
     }
 
     [Theory]
+    [InlineData(2)]
+    public void CoreObject_LoadModelError(uint speakerId)
+    {
+        Core core = GetDefaultCoreObject();
+        Assert.Throws<CoreException>( () => core.LoadModel(speakerId));
+    }
+
+    [Theory]
     [InlineData(0)]
     [InlineData(1)]
-    public void CoreObject_IsModelLoaded(uint speakerId)
+    public void CoreObject_IsModelLoaded_NotLoaded(uint speakerId)
     {
         // Given
         Core core = GetDefaultCoreObject();
@@ -39,6 +47,20 @@ public class VoicevoxCoreNet_IsEvenShould
         bool isModelLoaded = core.IsModelLoaded(speakerId);
         // Then
         Assert.False(isModelLoaded);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    public void CoreObject_IsModelLoaded_Loaded(uint speakerId)
+    {
+        // Given
+        Core core = GetDefaultCoreObject();
+        core.LoadModel(speakerId);
+        // When
+        bool isModelLoaded = core.IsModelLoaded(speakerId);
+        // Then
+        Assert.True(isModelLoaded);
     }
 
     [Fact]
