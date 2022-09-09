@@ -49,6 +49,7 @@ namespace VoicevoxCoreNet.Native
         /// </summary>
         /// <returns>GPUモードならtrue、そうでないならfalse</returns>
         [DllImport(dllName)]
+        [return: MarshalAs(UnmanagedType.U1)]
         extern internal static bool voicevox_is_gpu_mode();
 
         /// <summary>
@@ -57,6 +58,7 @@ namespace VoicevoxCoreNet.Native
         /// <param name="speaker_id">読み込むモデルの話者ID</param>
         /// <returns>モデルが読み込まれているのであればtrue、そうでないならfalse</returns>
         [DllImport(dllName)]
+        [return: MarshalAs(UnmanagedType.U1)]
         extern internal static bool voicevox_is_model_loaded(uint speaker_id);
 
         /// <summary>
