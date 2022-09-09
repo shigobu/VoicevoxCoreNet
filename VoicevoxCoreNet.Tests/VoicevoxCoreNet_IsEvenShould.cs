@@ -81,6 +81,26 @@ public class VoicevoxCoreNet_IsEvenShould
         Assert.NotEmpty(json);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    public void CoreObject_Synthesis(uint speakerId)
+    {
+        // Given
+        Core core = GetDefaultCoreObject();
+        core.LoadModel(speakerId);
+        AudioQueryOptions audioQueryOptions = new AudioQueryOptions()
+        {
+            kana = false
+        };
+        string json = core.AudioQuery("あいうえお", speakerId, audioQueryOptions);
+        SynthesisOptions synthesisOptions = new SynthesisOptions();
+        // When
+        byte[] wavData = core.Synthesis(json, speakerId, synthesisOptions);
+        // Then
+        Assert.NotEmpty(wavData);
+    }
+
     /// <summary>
     /// デフォルトのcoreオブジェクトを取得します。
     /// </summary>
