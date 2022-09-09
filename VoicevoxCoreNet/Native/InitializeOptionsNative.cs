@@ -5,7 +5,7 @@ using System.Text;
 namespace VoicevoxCoreNet.Native
 {
     /// <summary>
-    /// 初期化オプション
+    /// 初期化オプションNative版
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     internal struct InitializeOptionsNative

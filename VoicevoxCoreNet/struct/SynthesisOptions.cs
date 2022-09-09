@@ -11,6 +11,7 @@ namespace VoicevoxCoreNet
         /// <summary>
         /// 疑問文の調整を有効にする
         /// </summary>
+        [MarshalAs(UnmanagedType.U1)]
         public bool enable_interrogative_upspeak;
     }
 }
