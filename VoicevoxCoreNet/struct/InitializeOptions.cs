@@ -52,6 +52,7 @@ namespace VoicevoxCoreNet
         /// <summary>
         /// 全てのモデルを読み込む
         /// </summary>
+        [MarshalAs(UnmanagedType.U1)]
         public bool load_all_models;
 
         /// <summary>
