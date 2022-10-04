@@ -1,6 +1,6 @@
 # VoicevoxCoreNet
 [VOICEVOX CORE](https://github.com/VOICEVOX/voicevox_core) の.NETラッパーです。C#で記述されています。VB.NETやF#,C++/CLIでも使えるはずです。  
-OSに依存するコード含んでいないので、マルチプラットフォーム(mac,Linux等)で動きます。
+OSに依存するコード含んでいないので、マルチプラットフォーム(Windows,mac,Linux等)で動きます。
 
 ## ビルド方法
 ビルドには、.NET sdk が必要です。最新版をインストールしてください。
