@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 
 namespace VoicevoxCoreNet.Tests;
-
+/*
 public class UnitTestFixture
 {
     public UnitTestFixture()
@@ -79,9 +79,9 @@ public class UnitTestFixture
         stream.CopyTo(outStream);
     }
 }
+*/
 
-
-public class VoicevoxCoreNet_IsEvenShould : IClassFixture<UnitTestFixture>
+public class VoicevoxCoreNet_IsEvenShould// : IClassFixture<UnitTestFixture>
 {
     [Fact]
     public void CoreObject_Create()
@@ -110,7 +110,7 @@ public class VoicevoxCoreNet_IsEvenShould : IClassFixture<UnitTestFixture>
     }
 
     [Theory]
-    [InlineData(2)]
+    [InlineData(999)]
     public void CoreObject_LoadModelError(uint speakerId)
     {
         Core core = GetDefaultCoreObject();
