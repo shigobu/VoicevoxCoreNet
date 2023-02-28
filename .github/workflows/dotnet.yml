@@ -25,6 +25,7 @@ jobs:
       shell: pwsh
       run: |
         Invoke-WebRequest https://github.com/VOICEVOX/voicevox_core/releases/latest/download/download-linux-x64 -OutFile ./download-linux-x64
-        ./download-linux-x64 --out ./VoicevoxCoreNet.Tests/bin/Debug/net6.0
+        dir
+        ./download-linux-x64 --output ./VoicevoxCoreNet.Tests/bin/Debug/net6.0
     - name: Test
       run: dotnet test --no-build --verbosity normal
