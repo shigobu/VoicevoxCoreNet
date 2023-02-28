@@ -24,8 +24,7 @@ jobs:
     - name: Download voicevox_core
       shell: pwsh
       run: |
-        Invoke-WebRequest https://github.com/VOICEVOX/voicevox_core/releases/latest/download/download-linux-x64 -OutFile ./download-linux-x64
-        chmod u+x ./download-linux-x64
-        ./download-linux-x64 --output ./VoicevoxCoreNet.Tests/bin/Debug/net6.0
+        dotnet tool install -g dotnet-script
+        dotnet script .\download_voicevox_core.csx
     - name: Test
       run: dotnet test --no-build --verbosity normal
