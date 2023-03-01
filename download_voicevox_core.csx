@@ -53,6 +53,11 @@ public void DownloadMain()
     // ダウンローダーのダウンロード。
     string url = string.Format(@"https://github.com/VOICEVOX/voicevox_core/releases/latest/download/download-{0}-{1}{2}", os, arch, ext);
     string outDir = @"./VoicevoxCoreNet.Tests/bin/Debug/net6.0";
+    foreach (var arg in Args)
+    {
+        outDir = arg;
+        break;
+    }    
     string downloadPath = Path.Combine(outDir, $"downloader{ext}");
     //ダウンローダーがすでに存在していたら、ライブラリのダウンロードは実行済とみなす
     if (File.Exists(downloadPath))
