@@ -1,3 +1,5 @@
+#!/usr/bin/env dotnet-script
+
 #r "System.Net.Http.dll"
 #r "System.Runtime.InteropServices.RuntimeInformation"
 
