@@ -1,3 +1,6 @@
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+
 namespace VoicevoxCoreNet.Tests;
 
 public class VoicevoxCoreNet_IsEvenShould
@@ -29,7 +32,7 @@ public class VoicevoxCoreNet_IsEvenShould
     }
 
     [Theory]
-    [InlineData(2)]
+    [InlineData(999)]
     public void CoreObject_LoadModelError(uint speakerId)
     {
         Core core = GetDefaultCoreObject();
