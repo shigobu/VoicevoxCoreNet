@@ -60,6 +60,7 @@ public void DownloadMain()
         Console.WriteLine("ダウンローダーがすでに存在しています。");
         return;
     }
+    Console.WriteLine("ダウンローダーのダウンロード中");
     DownloadFileAsync(url, downloadPath).Wait();
 
     //ダウンローダーに実行権限を付与
