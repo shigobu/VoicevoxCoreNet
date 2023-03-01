@@ -28,6 +28,6 @@ jobs:
     - name: Download voicevox_core
       run: |
         : # chmod +x ./download_voicevox_core.csx
-        dotnet script ./download_voicevox_core.csx
+        dotnet-script ./download_voicevox_core.csx
     - name: Test
       run: dotnet test --no-build --verbosity normal
