@@ -22,7 +22,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: addx
-      run: chmod +x ./download_voicevox_core.csx
+      run: |
+        chmod +x ./download_voicevox_core.csx
+        ls -l
     - name: Download voicevox_core
       run: |
         : # chmod +x ./download_voicevox_core.csx
