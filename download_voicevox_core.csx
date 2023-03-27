@@ -52,21 +52,14 @@ public void DownloadMain()
 
     // ダウンローダーのダウンロード。
     string url = string.Format(@"https://github.com/VOICEVOX/voicevox_core/releases/latest/download/download-{0}-{1}{2}", os, arch, ext);
-    string outDir = @"./VoicevoxCoreNet.Tests/bin/Debug/net6.0";
-    foreach (var arg in Args)
-    {
-        outDir = arg;
-        break;
-    }    
+    string outDir = @"./";
     string downloadPath = Path.Combine(outDir, $"downloader{ext}");
-    //ダウンローダーがすでに存在していたら、ライブラリのダウンロードは実行済とみなす
-    if (File.Exists(downloadPath))
+    //ダウンローダーが無い場合にダウンローダーのダウンロード
+    if (!File.Exists(downloadPath))
     {
-        Console.WriteLine("ダウンローダーがすでに存在しています。");
-        return;
+        Console.WriteLine("ダウンローダーのダウンロード中");
+        DownloadFileAsync(url, downloadPath).Wait();
     }
-    Console.WriteLine("ダウンローダーのダウンロード中");
-    DownloadFileAsync(url, downloadPath).Wait();
 
     //ダウンローダーに実行権限を付与
     Process process;
@@ -83,10 +76,17 @@ public void DownloadMain()
 
     //ダウンローダー実行
     Console.WriteLine("ダウンローダー実行");
+    //ダウンローダーにわたす引数作成
+    string arguments = "";
+    foreach (string arg in Args)
+    {
+        arguments += arg + " ";
+    }
+
     using (process = new Process())
     {
         process.StartInfo.FileName = downloadPath;
-        process.StartInfo.Arguments = $"--output {outDir}";
+        process.StartInfo.Arguments = arguments;
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
         process.Start();
