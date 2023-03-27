@@ -23,7 +23,7 @@ dotnet test
 ```
 
 ## ダウンローダーをダウンロードして実行するスクリプト
-voicevox_coreのダウンローダーをダウンロードして実行するC#スクリプトが含まれています。これは、実行中のOSとCPUアーキテクチャを自動で判断し、適切なダウンローダーをダウンロードし、実行します。ダウンローダーの引数には`--output`のみ指定されるので、CPU版がダウンロードされます。  
+voicevox_coreのダウンローダーをダウンロードして実行するC#スクリプトが含まれています。これは、実行中のOSとCPUアーキテクチャを自動で判断し、適切なダウンローダーをダウンロードし、実行します。  
 実行するには、.NET sdkと`dotnet-script`ツールが必要です。`dotnet-script`がインストールされていない場合は、以下のコマンドを使用してインストールできます。
 ```
 dotnet tool install -g dotnet-script
@@ -36,7 +36,7 @@ dotnet script ./download_voicevox_core.csx
 
 ダウンローダーに引数を渡したい場合は、` -- `を書いた後に引数を書いてください。そのままダウンローダーに渡されます。
 ```
-dotnet script ./download_voicevox_core.csx -- --output ./VoicevoxCoreNet.Tests/bin/ --device directml
+dotnet script ./download_voicevox_core.csx -- --output ./hoo/bar --device directml
 ```
 
 ## 開発環境
