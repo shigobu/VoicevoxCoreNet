@@ -34,11 +34,10 @@ jobs:
         dotnet script ./download_voicevox_core.csx -- --output ./VoicevoxCoreNet.Tests/bin/Debug/net6.0
         
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal -c Release
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: NuGetPackage
         path: VoicevoxCoreNet/bin/Release/*.nupkg
-        
