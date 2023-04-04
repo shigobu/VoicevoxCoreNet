@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore -c Release
       
     - name: Install dotnet script
       run: dotnet tool install -g dotnet-script
@@ -31,7 +31,13 @@ jobs:
     - name: Download voicevox_core
       run: |
         chmod +x ./download_voicevox_core.csx
-        dotnet script ./download_voicevox_core.csx -- --output ./VoicevoxCoreNet.Tests/bin/Debug/net6.0
+        dotnet script ./download_voicevox_core.csx -- --output ./VoicevoxCoreNet.Tests/bin/Release/net6.0
         
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal -c Release
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: NuGetPackage
+        path: VoicevoxCoreNet/bin/Release/*.nupkg
