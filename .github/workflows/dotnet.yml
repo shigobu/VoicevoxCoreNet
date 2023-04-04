@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore -c Release
       
     - name: Install dotnet script
       run: dotnet tool install -g dotnet-script
@@ -35,3 +35,10 @@ jobs:
         
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: NuGetPackage
+        path: VoicevoxCoreNet/bin/Release/*.nupkg
+        
