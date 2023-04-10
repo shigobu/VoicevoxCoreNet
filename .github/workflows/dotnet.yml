@@ -6,10 +6,15 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env: 
+  DOWNLOAD_SCRIPT_PATH: ./tools/download_voicevox_core.csx
+
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v3
@@ -28,12 +33,12 @@ jobs:
     - name: Install dotnet script
       run: dotnet tool install -g dotnet-script
 
+    - name: Set executable
+      if: runner.os == 'macOS' || runner.os == 'Linux'
+      run: chmod +x ${{DOWNLOAD_SCRIPT_PATH}}
+
     - name: Download voicevox_core
-      run: |
-        chmod +x $SCRIPT_PATH
-        dotnet script $SCRIPT_PATH -- --output ./VoicevoxCoreNet.Tests/bin/Release/net6.0
-      env: 
-        SCRIPT_PATH: ./tools/download_voicevox_core.csx
+      run: dotnet script ${{DOWNLOAD_SCRIPT_PATH}} -- --output ./VoicevoxCoreNet.Tests/bin/Release/net6.0
         
     - name: Test
       run: dotnet test --no-build --verbosity normal -c Release
