@@ -35,10 +35,10 @@ jobs:
 
     - name: Set executable
       if: runner.os == 'macOS' || runner.os == 'Linux'
-      run: chmod +x ${{DOWNLOAD_SCRIPT_PATH}}
+      run: chmod +x ${{env.DOWNLOAD_SCRIPT_PATH}}
 
     - name: Download voicevox_core
-      run: dotnet script ${{DOWNLOAD_SCRIPT_PATH}} -- --output ./VoicevoxCoreNet.Tests/bin/Release/net6.0
+      run: dotnet script ${{env.DOWNLOAD_SCRIPT_PATH}} -- --output ./VoicevoxCoreNet.Tests/bin/Release/net6.0
         
     - name: Test
       run: dotnet test --no-build --verbosity normal -c Release
