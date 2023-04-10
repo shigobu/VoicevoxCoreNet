@@ -14,7 +14,7 @@ Visual Studioでビルドもできます。
 ## テスト
 テストを実行するには、voicevox_coreが必要です。下記のコマンドで簡単にダウンロードできます。詳細は「ダウンローダーをダウンロードして実行するスクリプト」の項参照。
 ```
-dotnet script ./download_voicevox_core.csx -- --output ./VoicevoxCoreNet.Tests/bin/Debug/net6.0
+dotnet script ./tools/download_voicevox_core.csx -- --output ./VoicevoxCoreNet.Tests/bin/Debug/net6.0
 ```
 
 テストの実行は、以下のコマンドです。
@@ -31,12 +31,12 @@ dotnet tool install -g dotnet-script
 
 実行するには、以下のコマンドを実行します。
 ```
-dotnet script ./download_voicevox_core.csx
+dotnet script ./tools/download_voicevox_core.csx
 ```
 
 ダウンローダーに引数を渡したい場合は、` -- `を書いた後に引数を書いてください。そのままダウンローダーに渡されます。
 ```
-dotnet script ./download_voicevox_core.csx -- --output ./hoo/bar --device directml
+dotnet script ./tools/download_voicevox_core.csx -- --output ./hoo/bar --device directml
 ```
 
 ## 開発環境
